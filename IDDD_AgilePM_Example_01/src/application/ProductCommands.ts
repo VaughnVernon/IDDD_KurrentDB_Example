@@ -159,7 +159,7 @@ export class ProductCommands {
         ends: Date
     ): Promise<string> {
         const tenant = Tenant.of(tenantId);
-        const sprintId = SprintId.generate();
+        const sprintId = SprintId.unique();
         const product = Product.of(tenant, ProductId.of(productId));
 
         await product.planSprint(sprintId, name, goals, begins, ends);
@@ -188,7 +188,7 @@ export class ProductCommands {
         ends: Date
     ): Promise<string> {
         const tenant = Tenant.of(tenantId);
-        const releaseId = ReleaseId.generate();
+        const releaseId = ReleaseId.unique();
         const product = Product.of(tenant, ProductId.of(productId));
 
         await product.scheduleRelease(releaseId, name, description, begins, ends);

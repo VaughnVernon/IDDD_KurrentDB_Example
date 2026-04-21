@@ -74,7 +74,7 @@ describe('BacklogItem', () => {
     beforeEach(() => {
         tenant = Tenant.unique();
         productId = ProductId.unique();
-        backlogItemId = BacklogItemId.generate();
+        backlogItemId = BacklogItemId.unique();
     });
 
     async function newBacklogItem(): Promise<BacklogItem> {
@@ -117,10 +117,10 @@ describe('BacklogItem', () => {
             const backlogItem = await newBacklogItem();
 
             // Must be scheduled before committing
-            const releaseId = ReleaseId.generate();
+            const releaseId = ReleaseId.unique();
             await backlogItem.scheduleTo(releaseId);
 
-            const sprintId = SprintId.generate();
+            const sprintId = SprintId.unique();
             await backlogItem.commitTo(sprintId);
 
             const events = await readEvents(journal, streamName);
@@ -134,9 +134,9 @@ describe('BacklogItem', () => {
 
         it('should throw error when already committed', async () => {
             const backlogItem = await newBacklogItem();
-            const releaseId = ReleaseId.generate();
+            const releaseId = ReleaseId.unique();
             await backlogItem.scheduleTo(releaseId);
-            const sprintId = SprintId.generate();
+            const sprintId = SprintId.unique();
             await backlogItem.commitTo(sprintId);
 
             await expect(backlogItem.commitTo(sprintId))
@@ -145,7 +145,7 @@ describe('BacklogItem', () => {
 
         it('should throw error when not scheduled for release', async () => {
             const backlogItem = await newBacklogItem();
-            const sprintId = SprintId.generate();
+            const sprintId = SprintId.unique();
 
             await expect(backlogItem.commitTo(sprintId))
                 .rejects.toThrow('Must be scheduled for release to commit to sprint');
@@ -158,10 +158,10 @@ describe('BacklogItem', () => {
             const backlogItem = await newBacklogItem();
 
             // Must be scheduled before committing
-            const releaseId = ReleaseId.generate();
+            const releaseId = ReleaseId.unique();
             await backlogItem.scheduleTo(releaseId);
 
-            const sprintId = SprintId.generate();
+            const sprintId = SprintId.unique();
             await backlogItem.commitTo(sprintId);
             await backlogItem.uncommit();
 
@@ -187,7 +187,7 @@ describe('BacklogItem', () => {
             const streamName = BacklogItem.streamNameFor(tenant, backlogItemId);
             const backlogItem = await newBacklogItem();
 
-            const releaseId = ReleaseId.generate();
+            const releaseId = ReleaseId.unique();
             await backlogItem.scheduleTo(releaseId);
 
             const events = await readEvents(journal, streamName);
@@ -201,7 +201,7 @@ describe('BacklogItem', () => {
 
         it('should throw error when already scheduled', async () => {
             const backlogItem = await newBacklogItem();
-            const releaseId = ReleaseId.generate();
+            const releaseId = ReleaseId.unique();
             await backlogItem.scheduleTo(releaseId);
 
             await expect(backlogItem.scheduleTo(releaseId))
@@ -214,7 +214,7 @@ describe('BacklogItem', () => {
             const streamName = BacklogItem.streamNameFor(tenant, backlogItemId);
             const backlogItem = await newBacklogItem();
 
-            const releaseId = ReleaseId.generate();
+            const releaseId = ReleaseId.unique();
             await backlogItem.scheduleTo(releaseId);
             await backlogItem.unschedule();
 
@@ -285,7 +285,7 @@ describe('BacklogItem', () => {
             const streamName = BacklogItem.streamNameFor(tenant, backlogItemId);
             const backlogItem = await newBacklogItem();
 
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             await backlogItem.defineTask(taskId, 'Implement login form', 'Create the HTML/CSS for the login form');
 
             const events = await readEvents(journal, streamName);
@@ -301,7 +301,7 @@ describe('BacklogItem', () => {
 
         it('should throw error when task already exists', async () => {
             const backlogItem = await newBacklogItem();
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             await backlogItem.defineTask(taskId, 'Task 1', 'Description');
 
             await expect(backlogItem.defineTask(taskId, 'Task 2', 'Description'))
@@ -310,7 +310,7 @@ describe('BacklogItem', () => {
 
         it('should throw error when name is empty', async () => {
             const backlogItem = await newBacklogItem();
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
 
             await expect(backlogItem.defineTask(taskId, '', 'Description'))
                 .rejects.toThrow('Task name cannot be empty');
@@ -322,7 +322,7 @@ describe('BacklogItem', () => {
             const streamName = BacklogItem.streamNameFor(tenant, backlogItemId);
             const backlogItem = await newBacklogItem();
 
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             await backlogItem.defineTask(taskId, 'Task', 'Original description');
             await backlogItem.describeTask(taskId, 'Updated description');
 
@@ -338,7 +338,7 @@ describe('BacklogItem', () => {
 
         it('should throw error when task not found', async () => {
             const backlogItem = await newBacklogItem();
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
 
             await expect(backlogItem.describeTask(taskId, 'Description'))
                 .rejects.toThrow('Task not found');
@@ -350,7 +350,7 @@ describe('BacklogItem', () => {
             const streamName = BacklogItem.streamNameFor(tenant, backlogItemId);
             const backlogItem = await newBacklogItem();
 
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             await backlogItem.defineTask(taskId, 'Task', 'Description');
             await backlogItem.estimateTaskHours(taskId, 8, 8);
 
@@ -367,7 +367,7 @@ describe('BacklogItem', () => {
 
         it('should throw error when task not found', async () => {
             const backlogItem = await newBacklogItem();
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
 
             await expect(backlogItem.estimateTaskHours(taskId, 8, 8))
                 .rejects.toThrow('Task not found');
@@ -375,7 +375,7 @@ describe('BacklogItem', () => {
 
         it('should throw error when hours estimated is negative', async () => {
             const backlogItem = await newBacklogItem();
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             await backlogItem.defineTask(taskId, 'Task', 'Description');
 
             await expect(backlogItem.estimateTaskHours(taskId, -1, 0))
@@ -384,7 +384,7 @@ describe('BacklogItem', () => {
 
         it('should throw error when hours remaining is negative', async () => {
             const backlogItem = await newBacklogItem();
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             await backlogItem.defineTask(taskId, 'Task', 'Description');
 
             await expect(backlogItem.estimateTaskHours(taskId, 8, -1))
@@ -393,7 +393,7 @@ describe('BacklogItem', () => {
 
         it('should throw error when hours remaining exceeds hours estimated', async () => {
             const backlogItem = await newBacklogItem();
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             await backlogItem.defineTask(taskId, 'Task', 'Description');
 
             await expect(backlogItem.estimateTaskHours(taskId, 8, 10))
@@ -406,7 +406,7 @@ describe('BacklogItem', () => {
             const streamName = BacklogItem.streamNameFor(tenant, backlogItemId);
             const backlogItem = await newBacklogItem();
 
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             await backlogItem.defineTask(taskId, 'Task', 'Description');
             await backlogItem.changeTaskStatus(taskId, TaskStatus.InProgress);
 
@@ -422,7 +422,7 @@ describe('BacklogItem', () => {
 
         it('should throw error when task not found', async () => {
             const backlogItem = await newBacklogItem();
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
 
             await expect(backlogItem.changeTaskStatus(taskId, TaskStatus.InProgress))
                 .rejects.toThrow('Task not found');
@@ -432,7 +432,7 @@ describe('BacklogItem', () => {
             const streamName = BacklogItem.streamNameFor(tenant, backlogItemId);
             const backlogItem = await newBacklogItem();
 
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             await backlogItem.defineTask(taskId, 'Task', 'Description');
             await backlogItem.changeTaskStatus(taskId, TaskStatus.NotStarted);
 
@@ -446,7 +446,7 @@ describe('BacklogItem', () => {
             const streamName = BacklogItem.streamNameFor(tenant, backlogItemId);
             const backlogItem = await newBacklogItem();
 
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const volunteerId = TeamMemberId.of('tenant-1', 'volunteer-1');
             await backlogItem.defineTask(taskId, 'Task', 'Description');
             await backlogItem.assignTaskVolunteer(taskId, volunteerId);
@@ -463,7 +463,7 @@ describe('BacklogItem', () => {
 
         it('should throw error when task not found', async () => {
             const backlogItem = await newBacklogItem();
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const volunteerId = TeamMemberId.of('tenant-1', 'volunteer-1');
 
             await expect(backlogItem.assignTaskVolunteer(taskId, volunteerId))
@@ -574,7 +574,7 @@ describe('BacklogItem', () => {
 
         it('should throw error when already done', async () => {
             const backlogItem = await newBacklogItem();
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             await backlogItem.defineTask(taskId, 'Task', 'Description');
             // Setting hours to 0 will auto-transition to DONE
             await backlogItem.estimateTaskHours(taskId, 0, 0);
@@ -695,7 +695,7 @@ describe('BacklogItem', () => {
             const streamName = BacklogItem.streamNameFor(tenant, backlogItemId);
             const backlogItem = await newBacklogItem();
 
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             await backlogItem.defineTask(taskId, 'Original name', 'Description');
             await backlogItem.renameTask(taskId, 'New name');
 
@@ -711,7 +711,7 @@ describe('BacklogItem', () => {
 
         it('should throw error when task not found', async () => {
             const backlogItem = await newBacklogItem();
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
 
             await expect(backlogItem.renameTask(taskId, 'New name'))
                 .rejects.toThrow('Task not found');
@@ -719,7 +719,7 @@ describe('BacklogItem', () => {
 
         it('should throw error when name is empty', async () => {
             const backlogItem = await newBacklogItem();
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             await backlogItem.defineTask(taskId, 'Task', 'Description');
 
             await expect(backlogItem.renameTask(taskId, ''))
@@ -730,7 +730,7 @@ describe('BacklogItem', () => {
             const streamName = BacklogItem.streamNameFor(tenant, backlogItemId);
             const backlogItem = await newBacklogItem();
 
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             await backlogItem.defineTask(taskId, 'Task name', 'Description');
             await backlogItem.renameTask(taskId, 'Task name');
 
@@ -740,7 +740,7 @@ describe('BacklogItem', () => {
 
         it('should throw error when backlog item is removed', async () => {
             const backlogItem = await newBacklogItem();
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             await backlogItem.defineTask(taskId, 'Task', 'Description');
             await backlogItem.markAsRemoved();
 
@@ -754,7 +754,7 @@ describe('BacklogItem', () => {
             const streamName = BacklogItem.streamNameFor(tenant, backlogItemId);
             const backlogItem = await newBacklogItem();
 
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             await backlogItem.defineTask(taskId, 'Task', 'Description');
             await backlogItem.removeTask(taskId);
 
@@ -769,7 +769,7 @@ describe('BacklogItem', () => {
 
         it('should throw error when task not found', async () => {
             const backlogItem = await newBacklogItem();
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
 
             await expect(backlogItem.removeTask(taskId))
                 .rejects.toThrow('Task not found');
@@ -777,7 +777,7 @@ describe('BacklogItem', () => {
 
         it('should throw error when backlog item is removed', async () => {
             const backlogItem = await newBacklogItem();
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             await backlogItem.defineTask(taskId, 'Task', 'Description');
             await backlogItem.markAsRemoved();
 
@@ -836,9 +836,9 @@ describe('BacklogItem', () => {
     describe('unschedule invariants', () => {
         it('should throw error when trying to unschedule while committed', async () => {
             const backlogItem = await newBacklogItem();
-            const releaseId = ReleaseId.generate();
+            const releaseId = ReleaseId.unique();
             await backlogItem.scheduleTo(releaseId);
-            const sprintId = SprintId.generate();
+            const sprintId = SprintId.unique();
             await backlogItem.commitTo(sprintId);
 
             await expect(backlogItem.unschedule())
@@ -850,7 +850,7 @@ describe('BacklogItem', () => {
         it('should transition to DONE when all task hours reach zero', async () => {
             const streamName = BacklogItem.streamNameFor(tenant, backlogItemId);
             const backlogItem = await newBacklogItem();
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             await backlogItem.defineTask(taskId, 'Task', 'Description');
             await backlogItem.estimateTaskHours(taskId, 8, 8);
             await backlogItem.estimateTaskHours(taskId, 8, 0);
@@ -864,7 +864,7 @@ describe('BacklogItem', () => {
         it('should regress from DONE when hours are added back', async () => {
             const streamName = BacklogItem.streamNameFor(tenant, backlogItemId);
             const backlogItem = await newBacklogItem();
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             await backlogItem.defineTask(taskId, 'Task', 'Description');
             // First complete by setting hours to 0
             await backlogItem.estimateTaskHours(taskId, 8, 0);
@@ -882,11 +882,11 @@ describe('BacklogItem', () => {
         it('should regress to COMMITTED when hours added back while committed', async () => {
             const streamName = BacklogItem.streamNameFor(tenant, backlogItemId);
             const backlogItem = await newBacklogItem();
-            const releaseId = ReleaseId.generate();
+            const releaseId = ReleaseId.unique();
             await backlogItem.scheduleTo(releaseId);
-            const sprintId = SprintId.generate();
+            const sprintId = SprintId.unique();
             await backlogItem.commitTo(sprintId);
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             await backlogItem.defineTask(taskId, 'Task', 'Description');
             // Complete by setting hours to 0
             await backlogItem.estimateTaskHours(taskId, 8, 0);

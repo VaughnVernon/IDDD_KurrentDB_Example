@@ -34,7 +34,7 @@ export class TeamCommands {
         name: string
     ): Promise<string> {
         const tenant = Tenant.of(tenantId);
-        const teamId = TeamId.generate();
+        const teamId = TeamId.unique();
 
         await Team.form(tenant, ProductId.of(productId), teamId, name);
 

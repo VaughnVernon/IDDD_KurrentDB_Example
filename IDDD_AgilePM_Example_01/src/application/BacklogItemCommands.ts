@@ -49,7 +49,7 @@ export class BacklogItemCommands {
         type: string
     ): Promise<string> {
         const tenant = Tenant.of(tenantId);
-        const backlogItemId = BacklogItemId.generate();
+        const backlogItemId = BacklogItemId.unique();
         const backlogItemType = type as BacklogItemType;
 
         await BacklogItem.plan(
@@ -223,7 +223,7 @@ export class BacklogItemCommands {
         description: string
     ): Promise<string> {
         const tenant = Tenant.of(tenantId);
-        const taskId = TaskId.generate();
+        const taskId = TaskId.unique();
         const backlogItem = BacklogItem.of(
             tenant,
             ProductId.of(productId),

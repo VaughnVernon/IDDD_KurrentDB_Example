@@ -42,15 +42,15 @@ describe('ReleaseId', () => {
 
     describe('generate', () => {
         it('should create a unique ID', () => {
-            const id = ReleaseId.generate();
+            const id = ReleaseId.unique();
 
             expect(id.id).toBeDefined();
             expect(id.id.length).toBeGreaterThan(0);
         });
 
         it('should create different IDs on each call', () => {
-            const id1 = ReleaseId.generate();
-            const id2 = ReleaseId.generate();
+            const id1 = ReleaseId.unique();
+            const id2 = ReleaseId.unique();
 
             expect(id1.id).not.toBe(id2.id);
         });

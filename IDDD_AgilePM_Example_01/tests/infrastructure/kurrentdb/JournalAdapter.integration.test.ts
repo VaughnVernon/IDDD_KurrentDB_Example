@@ -208,7 +208,7 @@ describe('JournalAdapter with EventSourcedEntity', () => {
                 ProductOwnerId.of(tenant.id, 'owner-1')
             );
 
-            const sprintId = SprintId.generate();
+            const sprintId = SprintId.unique();
             const begins = new Date('2024-01-01');
             const ends = new Date('2024-01-14');
 
@@ -238,7 +238,7 @@ describe('JournalAdapter with EventSourcedEntity', () => {
                 ProductOwnerId.of(tenant.id, 'owner-1')
             );
 
-            const releaseId = ReleaseId.generate();
+            const releaseId = ReleaseId.unique();
             const begins = new Date('2024-01-01');
             const ends = new Date('2024-03-31');
 
@@ -340,7 +340,7 @@ describe('JournalAdapter with EventSourcedEntity', () => {
                 ProductOwnerId.of(tenant.id, 'owner-1')
             );
 
-            const sprintId = SprintId.generate();
+            const sprintId = SprintId.unique();
             const begins = new Date('2024-01-14');
             const ends = new Date('2024-01-01'); // Before begins
 

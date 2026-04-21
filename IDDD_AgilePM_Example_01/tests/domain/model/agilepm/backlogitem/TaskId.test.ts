@@ -42,15 +42,15 @@ describe('TaskId', () => {
 
     describe('generate', () => {
         it('should create a unique ID', () => {
-            const id = TaskId.generate();
+            const id = TaskId.unique();
 
             expect(id.id).toBeDefined();
             expect(id.id.length).toBeGreaterThan(0);
         });
 
         it('should create different IDs on each call', () => {
-            const id1 = TaskId.generate();
-            const id2 = TaskId.generate();
+            const id1 = TaskId.unique();
+            const id2 = TaskId.unique();
 
             expect(id1.id).not.toBe(id2.id);
         });

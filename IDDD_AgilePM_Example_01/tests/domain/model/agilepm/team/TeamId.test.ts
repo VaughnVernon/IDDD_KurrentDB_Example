@@ -42,15 +42,15 @@ describe('TeamId', () => {
 
     describe('generate', () => {
         it('should create a unique ID', () => {
-            const id = TeamId.generate();
+            const id = TeamId.unique();
 
             expect(id.id).toBeDefined();
             expect(id.id.length).toBeGreaterThan(0);
         });
 
         it('should create different IDs on each call', () => {
-            const id1 = TeamId.generate();
-            const id2 = TeamId.generate();
+            const id1 = TeamId.unique();
+            const id2 = TeamId.unique();
 
             expect(id1.id).not.toBe(id2.id);
         });

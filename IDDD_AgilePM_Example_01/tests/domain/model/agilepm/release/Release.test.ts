@@ -85,7 +85,7 @@ describe('Release', () => {
     beforeEach(() => {
         tenant = Tenant.unique();
         productId = ProductId.unique();
-        releaseId = ReleaseId.generate();
+        releaseId = ReleaseId.unique();
     });
 
     /**
@@ -169,7 +169,7 @@ describe('Release', () => {
             const streamName = Release.streamNameFor(tenant, releaseId);
             const release = await newRelease();
 
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
 
             // When: a backlog item is scheduled
             await release.scheduleBacklogItem(backlogItemId);
@@ -191,10 +191,10 @@ describe('Release', () => {
             const streamName = Release.streamNameFor(tenant, releaseId);
             const release = await newRelease();
 
-            const backlogItemId1 = BacklogItemId.generate();
+            const backlogItemId1 = BacklogItemId.unique();
             await release.scheduleBacklogItem(backlogItemId1);
 
-            const backlogItemId2 = BacklogItemId.generate();
+            const backlogItemId2 = BacklogItemId.unique();
 
             // When: a second backlog item is scheduled
             await release.scheduleBacklogItem(backlogItemId2);
@@ -213,7 +213,7 @@ describe('Release', () => {
             const release = await newRelease();
             await release.archive();
 
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
 
             // When: scheduling an item for archived release
             // Then: an error is thrown
@@ -225,7 +225,7 @@ describe('Release', () => {
             // Given: a release with a scheduled item
             const release = await newRelease();
 
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
             await release.scheduleBacklogItem(backlogItemId);
 
             // When: scheduling the same item again
@@ -241,7 +241,7 @@ describe('Release', () => {
             const streamName = Release.streamNameFor(tenant, releaseId);
             const release = await newRelease();
 
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
             await release.scheduleBacklogItem(backlogItemId);
 
             // When: the backlog item is unscheduled
@@ -262,7 +262,7 @@ describe('Release', () => {
             // Given: an archived release with a scheduled item
             const release = await newRelease();
 
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
             await release.scheduleBacklogItem(backlogItemId);
             await release.archive();
 
@@ -276,7 +276,7 @@ describe('Release', () => {
             // Given: a release without scheduled items
             const release = await newRelease();
 
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
 
             // When: unscheduling a non-scheduled item
             // Then: an error is thrown

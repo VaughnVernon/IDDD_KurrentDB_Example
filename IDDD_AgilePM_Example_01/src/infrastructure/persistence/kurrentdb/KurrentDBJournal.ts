@@ -47,7 +47,7 @@ export class KurrentDBJournal extends Actor implements Journal<string> {
     constructor(client: KurrentDBClient) {
         super();
         this._client = client;
-        this._adapterProvider = EntryAdapterProvider.getInstance();
+        this._adapterProvider = EntryAdapterProvider.instance();
     }
 
     /**

@@ -42,15 +42,15 @@ describe('SprintId', () => {
 
     describe('generate', () => {
         it('should create a unique ID', () => {
-            const id = SprintId.generate();
+            const id = SprintId.unique();
 
             expect(id.id).toBeDefined();
             expect(id.id.length).toBeGreaterThan(0);
         });
 
         it('should create different IDs on each call', () => {
-            const id1 = SprintId.generate();
-            const id2 = SprintId.generate();
+            const id1 = SprintId.unique();
+            const id2 = SprintId.unique();
 
             expect(id1.id).not.toBe(id2.id);
         });

@@ -362,7 +362,7 @@ describe('BusinessPriorityCalculator', () => {
 describe('EstimationLogEntry', () => {
     describe('creation', () => {
         it('should create entry with taskId, date, and hoursRemaining', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const date = new Date('2024-01-15');
             const entry = new EstimationLogEntry(taskId, date, 8);
 
@@ -389,7 +389,7 @@ describe('EstimationLogEntry', () => {
 
     describe('isMatching', () => {
         it('should match when dates are equal', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const date = new Date('2024-01-15');
             const entry = new EstimationLogEntry(taskId, date, 8);
 
@@ -397,7 +397,7 @@ describe('EstimationLogEntry', () => {
         });
 
         it('should not match when dates differ', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const date = new Date('2024-01-15');
             const entry = new EstimationLogEntry(taskId, date, 8);
 
@@ -407,7 +407,7 @@ describe('EstimationLogEntry', () => {
 
     describe('updateHoursRemainingWhenDateMatches', () => {
         it('should update hours and return true when date matches', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const date = new Date('2024-01-15');
             const entry = new EstimationLogEntry(taskId, date, 8);
 
@@ -418,7 +418,7 @@ describe('EstimationLogEntry', () => {
         });
 
         it('should not update and return false when date does not match', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const date = new Date('2024-01-15');
             const entry = new EstimationLogEntry(taskId, date, 8);
 
@@ -431,7 +431,7 @@ describe('EstimationLogEntry', () => {
 
     describe('equality', () => {
         it('should be equal when all values match', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const date = new Date('2024-01-15');
             const e1 = new EstimationLogEntry(taskId, date, 8);
             const e2 = new EstimationLogEntry(taskId, new Date('2024-01-15'), 8);
@@ -440,7 +440,7 @@ describe('EstimationLogEntry', () => {
         });
 
         it('should not be equal when hoursRemaining differ', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const date = new Date('2024-01-15');
             const e1 = new EstimationLogEntry(taskId, date, 8);
             const e2 = new EstimationLogEntry(taskId, date, 4);
@@ -449,7 +449,7 @@ describe('EstimationLogEntry', () => {
         });
 
         it('should not be equal when dates differ', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const e1 = new EstimationLogEntry(taskId, new Date('2024-01-15'), 8);
             const e2 = new EstimationLogEntry(taskId, new Date('2024-01-16'), 8);
 
@@ -457,7 +457,7 @@ describe('EstimationLogEntry', () => {
         });
 
         it('should return false for null', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const entry = new EstimationLogEntry(taskId, new Date(), 8);
 
             expect(entry.equals(null as unknown as EstimationLogEntry)).toBe(false);

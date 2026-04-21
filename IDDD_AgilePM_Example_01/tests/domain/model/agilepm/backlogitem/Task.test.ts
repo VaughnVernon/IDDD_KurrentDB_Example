@@ -21,7 +21,7 @@ import { TeamMemberId } from '../../../../../src/domain/model/agilepm/team/TeamM
 describe('Task', () => {
     describe('construction', () => {
         it('should create task with valid name and description', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Implement login form', 'Create HTML/CSS for login');
 
             expect(task.taskId).toBe(taskId);
@@ -36,7 +36,7 @@ describe('Task', () => {
         });
 
         it('should trim name and description', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, '  Task name  ', '  Description  ');
 
             expect(task.name).toBe('Task name');
@@ -44,39 +44,39 @@ describe('Task', () => {
         });
 
         it('should handle null description gracefully', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task name', null as unknown as string);
 
             expect(task.description).toBe('');
         });
 
         it('should handle undefined description gracefully', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task name', undefined as unknown as string);
 
             expect(task.description).toBe('');
         });
 
         it('should throw error when name is empty', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
 
             expect(() => new Task(taskId, '', 'Description')).toThrow('Task name cannot be empty');
         });
 
         it('should throw error when name is only whitespace', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
 
             expect(() => new Task(taskId, '   ', 'Description')).toThrow('Task name cannot be empty');
         });
 
         it('should throw error when name is null', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
 
             expect(() => new Task(taskId, null as unknown as string, 'Description')).toThrow('Task name cannot be empty');
         });
 
         it('should throw error when name is undefined', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
 
             expect(() => new Task(taskId, undefined as unknown as string, 'Description')).toThrow('Task name cannot be empty');
         });
@@ -84,7 +84,7 @@ describe('Task', () => {
 
     describe('describe', () => {
         it('should update description', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task', 'Original description');
 
             task.describe('Updated description');
@@ -93,7 +93,7 @@ describe('Task', () => {
         });
 
         it('should trim description', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task', 'Original');
 
             task.describe('  New description  ');
@@ -102,7 +102,7 @@ describe('Task', () => {
         });
 
         it('should handle null description', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task', 'Original');
 
             task.describe(null as unknown as string);
@@ -111,7 +111,7 @@ describe('Task', () => {
         });
 
         it('should handle undefined description', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task', 'Original');
 
             task.describe(undefined as unknown as string);
@@ -120,7 +120,7 @@ describe('Task', () => {
         });
 
         it('should allow empty description', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task', 'Original');
 
             task.describe('');
@@ -131,7 +131,7 @@ describe('Task', () => {
 
     describe('estimateHours', () => {
         it('should set hours estimated and remaining', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task', 'Description');
 
             task.estimateHours(8, 8);
@@ -141,7 +141,7 @@ describe('Task', () => {
         });
 
         it('should allow hours remaining less than estimated', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task', 'Description');
 
             task.estimateHours(8, 4);
@@ -151,7 +151,7 @@ describe('Task', () => {
         });
 
         it('should allow zero hours estimated and remaining', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task', 'Description');
 
             task.estimateHours(0, 0);
@@ -161,28 +161,28 @@ describe('Task', () => {
         });
 
         it('should throw error when hours estimated is negative', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task', 'Description');
 
             expect(() => task.estimateHours(-1, 0)).toThrow('Hours estimated cannot be negative');
         });
 
         it('should throw error when hours remaining is negative', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task', 'Description');
 
             expect(() => task.estimateHours(8, -1)).toThrow('Hours remaining cannot be negative');
         });
 
         it('should throw error when hours remaining exceeds hours estimated', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task', 'Description');
 
             expect(() => task.estimateHours(8, 10)).toThrow('Hours remaining cannot exceed hours estimated');
         });
 
         it('should allow updating hours multiple times', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task', 'Description');
 
             task.estimateHours(8, 8);
@@ -195,14 +195,14 @@ describe('Task', () => {
 
     describe('estimationLog', () => {
         it('should start with empty estimation log', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task', 'Description');
 
             expect(task.estimationLog).toHaveLength(0);
         });
 
         it('should add entry when hours are estimated', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task', 'Description');
 
             task.estimateHours(8, 8);
@@ -213,7 +213,7 @@ describe('Task', () => {
         });
 
         it('should update same-day entry instead of adding new one', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task', 'Description');
 
             task.estimateHours(8, 8);
@@ -224,7 +224,7 @@ describe('Task', () => {
         });
 
         it('should track final hours remaining after multiple same-day estimates', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task', 'Description');
 
             task.estimateHours(16, 16);
@@ -238,7 +238,7 @@ describe('Task', () => {
 
     describe('changeStatus', () => {
         it('should change status to InProgress', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task', 'Description');
 
             task.changeStatus(TaskStatus.InProgress);
@@ -248,7 +248,7 @@ describe('Task', () => {
         });
 
         it('should change status to Done', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task', 'Description');
 
             task.changeStatus(TaskStatus.Done);
@@ -258,7 +258,7 @@ describe('Task', () => {
         });
 
         it('should change status to Impediment', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task', 'Description');
 
             task.changeStatus(TaskStatus.Impediment);
@@ -268,7 +268,7 @@ describe('Task', () => {
         });
 
         it('should change status back to NotStarted', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task', 'Description');
 
             task.changeStatus(TaskStatus.InProgress);
@@ -279,7 +279,7 @@ describe('Task', () => {
         });
 
         it('should allow changing from Done to other status', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task', 'Description');
 
             task.changeStatus(TaskStatus.Done);
@@ -292,7 +292,7 @@ describe('Task', () => {
 
     describe('assignVolunteer', () => {
         it('should assign volunteer to task', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const volunteerId = TeamMemberId.of('tenant-1', 'volunteer-1');
             const task = new Task(taskId, 'Task', 'Description');
 
@@ -303,7 +303,7 @@ describe('Task', () => {
         });
 
         it('should allow reassigning volunteer', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const volunteerId1 = TeamMemberId.of('tenant-1', 'volunteer-1');
             const volunteerId2 = TeamMemberId.of('tenant-1', 'volunteer-2');
             const task = new Task(taskId, 'Task', 'Description');
@@ -318,7 +318,7 @@ describe('Task', () => {
 
     describe('rename', () => {
         it('should rename task', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Original name', 'Description');
 
             task.rename('New name');
@@ -327,7 +327,7 @@ describe('Task', () => {
         });
 
         it('should trim new name', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Original', 'Description');
 
             task.rename('  New name  ');
@@ -336,28 +336,28 @@ describe('Task', () => {
         });
 
         it('should throw error when new name is empty', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Original', 'Description');
 
             expect(() => task.rename('')).toThrow('Task name cannot be empty');
         });
 
         it('should throw error when new name is only whitespace', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Original', 'Description');
 
             expect(() => task.rename('   ')).toThrow('Task name cannot be empty');
         });
 
         it('should throw error when new name is null', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Original', 'Description');
 
             expect(() => task.rename(null as unknown as string)).toThrow('Task name cannot be empty');
         });
 
         it('should throw error when new name is undefined', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Original', 'Description');
 
             expect(() => task.rename(undefined as unknown as string)).toThrow('Task name cannot be empty');
@@ -366,7 +366,7 @@ describe('Task', () => {
 
     describe('equals', () => {
         it('should be equal when taskIds match', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task1 = new Task(taskId, 'Task 1', 'Description 1');
             const task2 = new Task(taskId, 'Task 2', 'Description 2');
 
@@ -374,8 +374,8 @@ describe('Task', () => {
         });
 
         it('should not be equal when taskIds differ', () => {
-            const taskId1 = TaskId.generate();
-            const taskId2 = TaskId.generate();
+            const taskId1 = TaskId.unique();
+            const taskId2 = TaskId.unique();
             const task1 = new Task(taskId1, 'Task', 'Description');
             const task2 = new Task(taskId2, 'Task', 'Description');
 
@@ -383,14 +383,14 @@ describe('Task', () => {
         });
 
         it('should return false when comparing with null', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task', 'Description');
 
             expect(task.equals(null as unknown as Task)).toBe(false);
         });
 
         it('should return false when comparing with undefined', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task', 'Description');
 
             expect(task.equals(undefined as unknown as Task)).toBe(false);
@@ -399,7 +399,7 @@ describe('Task', () => {
 
     describe('getter properties', () => {
         it('should return correct taskId', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task', 'Description');
 
             expect(task.taskId).toBe(taskId);
@@ -407,14 +407,14 @@ describe('Task', () => {
         });
 
         it('should return correct hasVolunteer when no volunteer assigned', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task', 'Description');
 
             expect(task.hasVolunteer).toBe(false);
         });
 
         it('should return correct hasVolunteer when volunteer assigned', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const volunteerId = TeamMemberId.of('tenant-1', 'volunteer-1');
             const task = new Task(taskId, 'Task', 'Description');
 
@@ -424,14 +424,14 @@ describe('Task', () => {
         });
 
         it('should return correct isDone when status is NotStarted', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task', 'Description');
 
             expect(task.isDone).toBe(false);
         });
 
         it('should return correct isDone when status is InProgress', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task', 'Description');
 
             task.changeStatus(TaskStatus.InProgress);
@@ -440,7 +440,7 @@ describe('Task', () => {
         });
 
         it('should return correct isDone when status is Impediment', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task', 'Description');
 
             task.changeStatus(TaskStatus.Impediment);
@@ -449,7 +449,7 @@ describe('Task', () => {
         });
 
         it('should return correct isDone when status is Done', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task', 'Description');
 
             task.changeStatus(TaskStatus.Done);
@@ -460,7 +460,7 @@ describe('Task', () => {
 
     describe('integration scenarios', () => {
         it('should handle complete task lifecycle', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const volunteerId = TeamMemberId.of('tenant-1', 'volunteer-1');
             const task = new Task(taskId, 'Implement feature', 'Create the feature');
 
@@ -512,7 +512,7 @@ describe('Task', () => {
         });
 
         it('should allow task without volunteer to be completed', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task', 'Description');
 
             task.changeStatus(TaskStatus.Done);
@@ -522,7 +522,7 @@ describe('Task', () => {
         });
 
         it('should allow task without hours estimate to be completed', () => {
-            const taskId = TaskId.generate();
+            const taskId = TaskId.unique();
             const task = new Task(taskId, 'Task', 'Description');
 
             task.changeStatus(TaskStatus.Done);

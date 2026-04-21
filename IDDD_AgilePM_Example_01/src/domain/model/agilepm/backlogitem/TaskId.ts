@@ -27,7 +27,7 @@ export class TaskId {
         this._id = id;
     }
 
-    static unqiue(): TaskId {
+    static unique(): TaskId {
         return new TaskId(v4());
     }
 

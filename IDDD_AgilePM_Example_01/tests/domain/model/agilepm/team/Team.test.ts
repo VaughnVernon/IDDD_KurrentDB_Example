@@ -67,7 +67,7 @@ describe('Team', () => {
     beforeEach(() => {
         tenant = Tenant.unique();
         productId = ProductId.unique();
-        teamId = TeamId.generate();
+        teamId = TeamId.unique();
     });
 
     async function newTeam(): Promise<Team> {

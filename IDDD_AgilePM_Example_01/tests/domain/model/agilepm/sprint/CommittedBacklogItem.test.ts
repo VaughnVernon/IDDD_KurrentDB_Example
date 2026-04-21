@@ -19,7 +19,7 @@ import { BacklogItemId } from '../../../../../src/domain/model/agilepm/backlogit
 describe('CommittedBacklogItem', () => {
     describe('constructor', () => {
         it('should create a committed backlog item with valid data', () => {
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
             const ordering = 0;
 
             const committedItem = new CommittedBacklogItem(backlogItemId, ordering);
@@ -29,7 +29,7 @@ describe('CommittedBacklogItem', () => {
         });
 
         it('should create a committed backlog item with ordering of zero', () => {
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
 
             const committedItem = new CommittedBacklogItem(backlogItemId, 0);
 
@@ -37,7 +37,7 @@ describe('CommittedBacklogItem', () => {
         });
 
         it('should create a committed backlog item with positive ordering', () => {
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
 
             const committedItem = new CommittedBacklogItem(backlogItemId, 10);
 
@@ -45,7 +45,7 @@ describe('CommittedBacklogItem', () => {
         });
 
         it('should create a committed backlog item with large ordering value', () => {
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
             const largeOrdering = 999999;
 
             const committedItem = new CommittedBacklogItem(backlogItemId, largeOrdering);
@@ -54,14 +54,14 @@ describe('CommittedBacklogItem', () => {
         });
 
         it('should throw error when ordering is negative', () => {
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
 
             expect(() => new CommittedBacklogItem(backlogItemId, -1))
                 .toThrow('Ordering must be non-negative');
         });
 
         it('should throw error when ordering is large negative value', () => {
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
 
             expect(() => new CommittedBacklogItem(backlogItemId, -100))
                 .toThrow('Ordering must be non-negative');
@@ -70,7 +70,7 @@ describe('CommittedBacklogItem', () => {
 
     describe('backlogItemId getter', () => {
         it('should return the backlog item id', () => {
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
             const committedItem = new CommittedBacklogItem(backlogItemId, 5);
 
             expect(committedItem.backlogItemId).toBe(backlogItemId);
@@ -80,7 +80,7 @@ describe('CommittedBacklogItem', () => {
 
     describe('ordering getter', () => {
         it('should return the ordering value', () => {
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
             const committedItem = new CommittedBacklogItem(backlogItemId, 42);
 
             expect(committedItem.ordering).toBe(42);
@@ -107,8 +107,8 @@ describe('CommittedBacklogItem', () => {
         });
 
         it('should return false when backlog item ids are different', () => {
-            const backlogItemId1 = BacklogItemId.generate();
-            const backlogItemId2 = BacklogItemId.generate();
+            const backlogItemId1 = BacklogItemId.unique();
+            const backlogItemId2 = BacklogItemId.unique();
             const item1 = new CommittedBacklogItem(backlogItemId1, 0);
             const item2 = new CommittedBacklogItem(backlogItemId2, 0);
 
@@ -116,21 +116,21 @@ describe('CommittedBacklogItem', () => {
         });
 
         it('should return false when other is null', () => {
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
             const item = new CommittedBacklogItem(backlogItemId, 0);
 
             expect(item.equals(null as unknown as CommittedBacklogItem)).toBe(false);
         });
 
         it('should return false when other is undefined', () => {
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
             const item = new CommittedBacklogItem(backlogItemId, 0);
 
             expect(item.equals(undefined as unknown as CommittedBacklogItem)).toBe(false);
         });
 
         it('should be reflexive - item equals itself', () => {
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
             const item = new CommittedBacklogItem(backlogItemId, 5);
 
             expect(item.equals(item)).toBe(true);
@@ -167,7 +167,7 @@ describe('CommittedBacklogItem', () => {
 
     describe('immutability', () => {
         it('should maintain immutable backlog item id', () => {
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
             const committedItem = new CommittedBacklogItem(backlogItemId, 0);
 
             const retrievedId1 = committedItem.backlogItemId;
@@ -178,7 +178,7 @@ describe('CommittedBacklogItem', () => {
         });
 
         it('should maintain immutable ordering', () => {
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
             const committedItem = new CommittedBacklogItem(backlogItemId, 7);
 
             const ordering1 = committedItem.ordering;

@@ -42,15 +42,15 @@ describe('BacklogItemId', () => {
 
     describe('generate', () => {
         it('should create a unique ID', () => {
-            const id = BacklogItemId.generate();
+            const id = BacklogItemId.unique();
 
             expect(id.id).toBeDefined();
             expect(id.id.length).toBeGreaterThan(0);
         });
 
         it('should create different IDs on each call', () => {
-            const id1 = BacklogItemId.generate();
-            const id2 = BacklogItemId.generate();
+            const id1 = BacklogItemId.unique();
+            const id2 = BacklogItemId.unique();
 
             expect(id1.id).not.toBe(id2.id);
         });

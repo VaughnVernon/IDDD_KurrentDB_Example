@@ -19,7 +19,7 @@ import { BacklogItemId } from '../../../../../src/domain/model/agilepm/backlogit
 describe('ScheduledBacklogItem', () => {
     describe('constructor', () => {
         it('should create a scheduled backlog item with valid data', () => {
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
             const ordering = 0;
 
             const scheduledItem = new ScheduledBacklogItem(backlogItemId, ordering);
@@ -29,7 +29,7 @@ describe('ScheduledBacklogItem', () => {
         });
 
         it('should create a scheduled backlog item with ordering of zero', () => {
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
 
             const scheduledItem = new ScheduledBacklogItem(backlogItemId, 0);
 
@@ -37,7 +37,7 @@ describe('ScheduledBacklogItem', () => {
         });
 
         it('should create a scheduled backlog item with positive ordering', () => {
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
 
             const scheduledItem = new ScheduledBacklogItem(backlogItemId, 10);
 
@@ -45,7 +45,7 @@ describe('ScheduledBacklogItem', () => {
         });
 
         it('should create a scheduled backlog item with large ordering value', () => {
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
             const largeOrdering = 999999;
 
             const scheduledItem = new ScheduledBacklogItem(backlogItemId, largeOrdering);
@@ -54,14 +54,14 @@ describe('ScheduledBacklogItem', () => {
         });
 
         it('should throw error when ordering is negative', () => {
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
 
             expect(() => new ScheduledBacklogItem(backlogItemId, -1))
                 .toThrow('Ordering must be non-negative');
         });
 
         it('should throw error when ordering is large negative value', () => {
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
 
             expect(() => new ScheduledBacklogItem(backlogItemId, -100))
                 .toThrow('Ordering must be non-negative');
@@ -70,7 +70,7 @@ describe('ScheduledBacklogItem', () => {
 
     describe('backlogItemId getter', () => {
         it('should return the backlog item id', () => {
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
             const scheduledItem = new ScheduledBacklogItem(backlogItemId, 5);
 
             expect(scheduledItem.backlogItemId).toBe(backlogItemId);
@@ -80,7 +80,7 @@ describe('ScheduledBacklogItem', () => {
 
     describe('ordering getter', () => {
         it('should return the ordering value', () => {
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
             const scheduledItem = new ScheduledBacklogItem(backlogItemId, 42);
 
             expect(scheduledItem.ordering).toBe(42);
@@ -107,8 +107,8 @@ describe('ScheduledBacklogItem', () => {
         });
 
         it('should return false when backlog item ids are different', () => {
-            const backlogItemId1 = BacklogItemId.generate();
-            const backlogItemId2 = BacklogItemId.generate();
+            const backlogItemId1 = BacklogItemId.unique();
+            const backlogItemId2 = BacklogItemId.unique();
             const item1 = new ScheduledBacklogItem(backlogItemId1, 0);
             const item2 = new ScheduledBacklogItem(backlogItemId2, 0);
 
@@ -116,21 +116,21 @@ describe('ScheduledBacklogItem', () => {
         });
 
         it('should return false when other is null', () => {
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
             const item = new ScheduledBacklogItem(backlogItemId, 0);
 
             expect(item.equals(null as unknown as ScheduledBacklogItem)).toBe(false);
         });
 
         it('should return false when other is undefined', () => {
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
             const item = new ScheduledBacklogItem(backlogItemId, 0);
 
             expect(item.equals(undefined as unknown as ScheduledBacklogItem)).toBe(false);
         });
 
         it('should be reflexive - item equals itself', () => {
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
             const item = new ScheduledBacklogItem(backlogItemId, 5);
 
             expect(item.equals(item)).toBe(true);
@@ -167,7 +167,7 @@ describe('ScheduledBacklogItem', () => {
 
     describe('immutability', () => {
         it('should maintain immutable backlog item id', () => {
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
             const scheduledItem = new ScheduledBacklogItem(backlogItemId, 0);
 
             const retrievedId1 = scheduledItem.backlogItemId;
@@ -178,7 +178,7 @@ describe('ScheduledBacklogItem', () => {
         });
 
         it('should maintain immutable ordering', () => {
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
             const scheduledItem = new ScheduledBacklogItem(backlogItemId, 7);
 
             const ordering1 = scheduledItem.ordering;

@@ -115,7 +115,7 @@ function registerEventAdapter<T extends Source<unknown>>(
  * Call this function during application initialization.
  */
 export function registerAgilePMEventAdapters(): void {
-    const provider = EntryAdapterProvider.getInstance();
+    const provider = EntryAdapterProvider.instance();
 
     // Product events
     registerEventAdapter(provider, ProductInitiated, (data) =>

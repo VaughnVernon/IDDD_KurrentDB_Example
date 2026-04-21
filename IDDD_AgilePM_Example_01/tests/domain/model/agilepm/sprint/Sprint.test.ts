@@ -67,7 +67,7 @@ describe('Sprint', () => {
     beforeEach(() => {
         tenant = Tenant.unique();
         productId = ProductId.unique();
-        sprintId = SprintId.generate();
+        sprintId = SprintId.unique();
     });
 
     async function newSprint(): Promise<Sprint> {
@@ -121,7 +121,7 @@ describe('Sprint', () => {
             const streamName = Sprint.streamNameFor(tenant, sprintId);
             const sprint = await newSprint();
 
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
             await sprint.commit(backlogItemId);
 
             const events = await readEvents(journal, streamName);
@@ -138,10 +138,10 @@ describe('Sprint', () => {
             const streamName = Sprint.streamNameFor(tenant, sprintId);
             const sprint = await newSprint();
 
-            const backlogItemId1 = BacklogItemId.generate();
+            const backlogItemId1 = BacklogItemId.unique();
             await sprint.commit(backlogItemId1);
 
-            const backlogItemId2 = BacklogItemId.generate();
+            const backlogItemId2 = BacklogItemId.unique();
             await sprint.commit(backlogItemId2);
 
             const events = await readEvents(journal, streamName);
@@ -154,7 +154,7 @@ describe('Sprint', () => {
         it('should throw error when backlog item already committed', async () => {
             const sprint = await newSprint();
 
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
             await sprint.commit(backlogItemId);
 
             await expect(sprint.commit(backlogItemId))
@@ -167,7 +167,7 @@ describe('Sprint', () => {
             const streamName = Sprint.streamNameFor(tenant, sprintId);
             const sprint = await newSprint();
 
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
             await sprint.commit(backlogItemId);
             await sprint.uncommit(backlogItemId);
 
@@ -183,7 +183,7 @@ describe('Sprint', () => {
         it('should throw error when backlog item not committed', async () => {
             const sprint = await newSprint();
 
-            const backlogItemId = BacklogItemId.generate();
+            const backlogItemId = BacklogItemId.unique();
 
             await expect(sprint.uncommit(backlogItemId))
                 .rejects.toThrow('Backlog item not committed to this sprint');
