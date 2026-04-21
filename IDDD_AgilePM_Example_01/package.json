@@ -31,8 +31,8 @@
   "license": "ISC",
   "dependencies": {
     "@kurrent/kurrentdb-client": "^1.1.0",
-    "domo-actors": "^1.1.0",
-    "domo-tactical": "^0.2.0",
+    "domo-actors": "^1.2.4",
+    "domo-tactical": "^0.5.1",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "uuid": "^13.0.0"
