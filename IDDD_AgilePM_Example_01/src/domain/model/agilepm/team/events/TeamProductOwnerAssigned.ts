@@ -1,0 +1,45 @@
+//   Copyright 2012-2026 Vaughn Vernon. All rights reserved.
+//
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//
+//       http://www.apache.org/licenses/LICENSE-2.0
+//
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+
+import { DomainEvent } from 'domo-tactical';
+import type { Tenant } from '../../tenant/Tenant';
+import type { ProductId } from '../../product/ProductId';
+import type { TeamId } from '../TeamId';
+
+/**
+ * Event emitted when a ProductOwner is assigned to a Team.
+ */
+export class TeamProductOwnerAssigned extends DomainEvent {
+    static with(
+        tenant: Tenant,
+        productId: ProductId,
+        teamId: TeamId,
+        username: string
+    ): TeamProductOwnerAssigned {
+        return new TeamProductOwnerAssigned(tenant.id, productId.id, teamId.id, username);
+    }
+
+    constructor(
+        public readonly tenantId: string,
+        public readonly productId: string,
+        public readonly teamId: string,
+        public readonly username: string
+    ) {
+        super();
+    }
+
+    override id(): string {
+        return this.teamId;
+    }
+}

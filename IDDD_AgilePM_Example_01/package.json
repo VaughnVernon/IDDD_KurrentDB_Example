@@ -1,0 +1,52 @@
+{
+  "name": "agilepm-example",
+  "version": "1.0.0",
+  "description": "Agile PM Example with KurrentDB",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/server.ts",
+    "start:watch": "tsx watch src/server.ts",
+    "dev": "vite",
+    "clean": "rm -rf dist",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "NODE_OPTIONS='--experimental-require-module' vitest run",
+    "test:watch": "NODE_OPTIONS='--experimental-require-module' vitest",
+    "test:kurrentdb": "NODE_OPTIONS='--experimental-require-module' vitest run --config vitest.config.kurrentdb.ts",
+    "test:kurrentdb:keep": "KURRENTDB_KEEP_RUNNING=true NODE_OPTIONS='--experimental-require-module' vitest run --config vitest.config.kurrentdb.ts",
+    "test:all": "NODE_OPTIONS='--experimental-require-module' vitest run && NODE_OPTIONS='--experimental-require-module' vitest run --config vitest.config.kurrentdb.ts",
+    "test:coverage": "vitest run --coverage",
+    "infra:up": "docker compose up -d",
+    "infra:down": "docker compose down -v",
+    "infra:logs": "docker compose logs -f",
+    "infra:test:up": "docker compose -f docker-compose.test.yml up -d",
+    "infra:test:down": "docker compose -f docker-compose.test.yml down -v"
+  },
+  "keywords": [
+    "kurrentdb",
+    "event-sourcing",
+    "react"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@kurrent/kurrentdb-client": "^1.1.0",
+    "domo-actors": "^1.1.0",
+    "domo-tactical": "^0.2.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.8",
+    "@types/react-dom": "^19.2.3",
+    "@types/uuid": "^10.0.0",
+    "@vitejs/plugin-react": "^5.1.2",
+    "@vitest/coverage-v8": "^4.0.17",
+    "jsdom": "^27.4.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1",
+    "vitest": "^4.0.17"
+  }
+}

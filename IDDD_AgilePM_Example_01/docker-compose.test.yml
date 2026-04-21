@@ -1,0 +1,17 @@
+services:
+  kurrentdb-test:
+    image: kurrentplatform/kurrentdb:latest
+    container_name: agilepm-kurrentdb-test
+    ports:
+      - "${KURRENTDB_TEST_PORT:-2114}:2113"
+    environment:
+      - KURRENTDB_INSECURE=true
+      - KURRENTDB_RUN_PROJECTIONS=All
+      - KURRENTDB_ENABLE_ATOM_PUB_OVER_HTTP=true
+      - KURRENTDB_CLUSTER_SIZE=1
+      - KURRENTDB_START_STANDARD_PROJECTIONS=true
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:2113/health/live"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
